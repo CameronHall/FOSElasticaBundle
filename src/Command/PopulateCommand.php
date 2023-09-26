@@ -12,6 +12,7 @@
 namespace FOS\ElasticaBundle\Command;
 
 use Elastica\Exception\Bulk\ResponseException as BulkResponseException;
+use FOS\ElasticaBundle\Compatibility\EventDispatcherCompatibilityTrait;
 use FOS\ElasticaBundle\Event\AbstractIndexPopulateEvent;
 use FOS\ElasticaBundle\Event\PostIndexPopulateEvent;
 use FOS\ElasticaBundle\Event\PreIndexPopulateEvent;
@@ -30,7 +31,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface as LegacyEventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Populate the search index.
@@ -39,15 +42,15 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class PopulateCommand extends Command
 {
-    private EventDispatcherInterface $dispatcher;
-    private IndexManager $indexManager;
-    private PagerProviderRegistry $pagerProviderRegistry;
-    private PagerPersisterRegistry $pagerPersisterRegistry;
-    private PagerPersisterInterface $pagerPersister;
-    private Resetter $resetter;
+    use EventDispatcherCompatibilityTrait;
+    private $indexManager;
+    private $pagerProviderRegistry;
+    private $pagerPersisterRegistry;
+    private $pagerPersister;
+    private $resetter;
 
     public function __construct(
-        EventDispatcherInterface $dispatcher,
+        $dispatcher,
         IndexManager $indexManager,
         PagerProviderRegistry $pagerProviderRegistry,
         PagerPersisterRegistry $pagerPersisterRegistry,
@@ -143,7 +146,7 @@ class PopulateCommand extends Command
      */
     private function populateIndex(OutputInterface $output, string $index, bool $reset, array $options): void
     {
-        $this->dispatcher->dispatch($event = new PreIndexPopulateEvent($index, $reset, $options));
+        $this->dispatch($event = new PreIndexPopulateEvent($index, $reset, $options));
 
         if ($reset = $event->isReset()) {
             $output->writeln(\sprintf('<info>Resetting</info> <comment>%s</comment>', $index));
@@ -195,7 +198,7 @@ class PopulateCommand extends Command
             $this->dispatcher->removeListener(OnExceptionEvent::class, $ignoreExceptionsListener);
         }
 
-        $this->dispatcher->dispatch(new PostIndexPopulateEvent($index, $reset, $options));
+        $this->dispatch(new PostIndexPopulateEvent($index, $reset, $options));
 
         $this->refreshIndex($output, $index);
     }

@@ -3,7 +3,7 @@
 /*
  * This file is part of the FOSElasticaBundle package.
  *
- * (c) FriendsOfSymfony <https://friendsofsymfony.github.com/>
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,55 +12,153 @@
 namespace FOS\ElasticaBundle\Event;
 
 use Elastica\Document;
-use FOS\ElasticaBundle\Transformer\ModelToElasticaAutoTransformer;
+use Symfony\Component\EventDispatcher\Event as LegacyEvent;
 use Symfony\Contracts\EventDispatcher\Event;
 
-/**
- * @phpstan-import-type TFields from ModelToElasticaAutoTransformer
- */
-abstract class AbstractTransformEvent extends Event
-{
+if (!class_exists(Event::class)) {
     /**
-     * @var Document
+     * Symfony 3.4
      */
-    protected $document;
-
-    /**
-     * @var array
-     * @phpstan-var TFields
-     */
-    private $fields;
-
-    /**
-     * @var object
-     */
-    private $object;
-
-    /**
-     * @phpstan-param TFields $fields
-     */
-    public function __construct(Document $document, array $fields, object $object)
+    class AbstractTransformEvent extends AbstractEvent
     {
-        $this->document = $document;
-        $this->fields = $fields;
-        $this->object = $object;
+        /**
+         * @LegacyEvent("FOS\ElasticaBundle\Event\TransformEvent")
+         */
+        const PRE_TRANSFORM = 'fos_elastica.pre_transform';
+        /**
+         * @LegacyEvent("FOS\ElasticaBundle\Event\TransformEvent")
+         */
+        const POST_TRANSFORM = 'fos_elastica.post_transform';
+        /**
+         * @var Document
+         */
+        private $document;
+        /**
+         * @var array
+         */
+        private $fields;
+        /**
+         * @var object
+         */
+        private $object;
+
+        /**
+         * @param mixed  $document
+         * @param array  $fields
+         * @param object $object
+         */
+        public function __construct($document, array $fields, $object)
+        {
+            $this->document = $document;
+            $this->fields = $fields;
+            $this->object = $object;
+        }
+
+        /**
+         * @return Document
+         */
+        public function getDocument()
+        {
+            return $this->document;
+        }
+
+        /**
+         * @return array
+         */
+        public function getFields()
+        {
+            return $this->fields;
+        }
+
+        /**
+         * @return object
+         */
+        public function getObject()
+        {
+            return $this->object;
+        }
+
+        /**
+         * @param Document $document
+         */
+        public function setDocument(Document $document): self
+        {
+            $this->document = $document;
+
+            return $this;
+        }
     }
-
-    public function getDocument(): Document
-    {
-        return $this->document;
-    }
-
+} else {
     /**
-     * @phpstan-return TFields
+     * Symfony >= 4.3
      */
-    public function getFields(): array
+    class AbstractTransformEvent extends AbstractEvent
     {
-        return $this->fields;
-    }
+        /**
+         * @Event("FOS\ElasticaBundle\Event\TransformEvent")
+         */
+        const PRE_TRANSFORM = 'fos_elastica.pre_transform';
+        /**
+         * @Event("FOS\ElasticaBundle\Event\TransformEvent")
+         */
+        const POST_TRANSFORM = 'fos_elastica.post_transform';
+        /**
+         * @var Document
+         */
+        private $document;
+        /**
+         * @var array
+         */
+        private $fields;
+        /**
+         * @var object
+         */
+        private $object;
 
-    public function getObject(): object
-    {
-        return $this->object;
+        /**
+         * @param mixed  $document
+         * @param array  $fields
+         * @param object $object
+         */
+        public function __construct($document, array $fields, $object)
+        {
+            $this->document = $document;
+            $this->fields = $fields;
+            $this->object = $object;
+        }
+
+        /**
+         * @return Document
+         */
+        public function getDocument()
+        {
+            return $this->document;
+        }
+
+        /**
+         * @return array
+         */
+        public function getFields()
+        {
+            return $this->fields;
+        }
+
+        /**
+         * @return object
+         */
+        public function getObject()
+        {
+            return $this->object;
+        }
+
+        /**
+         * @param Document $document
+         */
+        public function setDocument(Document $document): self
+        {
+            $this->document = $document;
+
+            return $this;
+        }
     }
 }

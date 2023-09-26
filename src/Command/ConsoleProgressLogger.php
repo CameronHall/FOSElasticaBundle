@@ -21,13 +21,28 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class ConsoleProgressLogger
 {
-    private ?ProgressBar $progress = null;
-    private OutputInterface $output;
-    private string $action;
-    private string $index;
-    private int $offset;
-    private int $filteredCount = 0;
-    private bool $finished = false;
+    private $progress = null;
+    private $output;
+    /**
+     * @var string
+     */
+    private $action;
+    /**
+     * @var string
+     */
+    private $index;
+    /**
+     * @var int
+     */
+    private $offset;
+    /**
+     * @var int
+     */
+    private $filteredCount = 0;
+    /**
+     * @var bool
+     */
+    private $finished = false;
 
     public function __construct(OutputInterface $output, string $action, string $index, int $offset)
     {

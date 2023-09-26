@@ -24,7 +24,10 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 final class ResetTemplatesCommand extends Command
 {
-    private TemplateResetter $resetter;
+    /**
+     * @var \FOS\ElasticaBundle\Index\TemplateResetter
+     */
+    private $resetter;
 
     public function __construct(
         TemplateResetter $resetter

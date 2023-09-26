@@ -18,12 +18,20 @@ use FOS\ElasticaBundle\Persister\Event\PostInsertObjectsEvent;
 use FOS\ElasticaBundle\Persister\Event\PreFetchObjectsEvent;
 use FOS\ElasticaBundle\Persister\Event\PreInsertObjectsEvent;
 use FOS\ElasticaBundle\Provider\PagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface as LegacyEventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RegisterListenersService
 {
-    private EventDispatcherInterface $dispatcher;
+    /**
+     * @var EventDispatcherInterface|LegacyEventDispatcherInterface
+     */
+    private $dispatcher;
 
+    /**
+     * @param EventDispatcherInterface|LegacyEventDispatcherInterface $dispatcher
+     */
     public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher;

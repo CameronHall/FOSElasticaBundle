@@ -11,10 +11,13 @@
 
 namespace FOS\ElasticaBundle\Index;
 
+use FOS\ElasticaBundle\Compatibility\EventDispatcherCompatibilityTrait;
 use FOS\ElasticaBundle\Configuration\IndexConfig;
 use FOS\ElasticaBundle\Configuration\ManagerInterface;
 use FOS\ElasticaBundle\Event\PostIndexResetEvent;
 use FOS\ElasticaBundle\Event\PreIndexResetEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface as LegacyEventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -22,11 +25,23 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class Resetter implements ResetterInterface
 {
-    private AliasProcessor $aliasProcessor;
-    private ManagerInterface $configManager;
-    private EventDispatcherInterface $dispatcher;
-    private IndexManager $indexManager;
-    private MappingBuilder $mappingBuilder;
+    use EventDispatcherCompatibilityTrait;
+    /**
+     * @var \FOS\ElasticaBundle\Index\AliasProcessor
+     */
+    private $aliasProcessor;
+    /**
+     * @var \FOS\ElasticaBundle\Configuration\ManagerInterface
+     */
+    private $configManager;
+    /**
+     * @var \FOS\ElasticaBundle\Index\IndexManager
+     */
+    private $indexManager;
+    /**
+     * @var \FOS\ElasticaBundle\Index\MappingBuilder
+     */
+    private $mappingBuilder;
 
     public function __construct(
         ManagerInterface $configManager,
@@ -70,7 +85,7 @@ class Resetter implements ResetterInterface
             $this->aliasProcessor->setRootName($indexConfig, $index);
         }
 
-        $this->dispatcher->dispatch($event = new PreIndexResetEvent($indexName, $populating, $force));
+        $this->dispatch($event = new PreIndexResetEvent($indexName, $populating, $force));
 
         $mapping = $this->mappingBuilder->buildIndexMapping($indexConfig);
         $index->create($mapping, ['recreate' => true]);
@@ -79,7 +94,7 @@ class Resetter implements ResetterInterface
             $this->aliasProcessor->switchIndexAlias($indexConfig, $index, $force);
         }
 
-        $this->dispatcher->dispatch(new PostIndexResetEvent($indexName, $populating, $force));
+        $this->dispatch(new PostIndexResetEvent($indexName, $populating, $force));
     }
 
     /**

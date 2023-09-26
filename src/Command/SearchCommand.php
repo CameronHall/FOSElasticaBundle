@@ -25,7 +25,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class SearchCommand extends Command
 {
-    private IndexManager $indexManager;
+    /**
+     * @var \FOS\ElasticaBundle\Index\IndexManager
+     */
+    private $indexManager;
 
     public function __construct(IndexManager $indexManager)
     {

@@ -17,7 +17,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class FilterObjectsListener implements EventSubscriberInterface
 {
-    private IndexableInterface $indexable;
+    /**
+     * @var \FOS\ElasticaBundle\Provider\IndexableInterface
+     */
+    private $indexable;
 
     public function __construct(IndexableInterface $indexable)
     {

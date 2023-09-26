@@ -22,7 +22,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class MappingBuilder
 {
-    private EventDispatcherInterface $dispatcher;
+    /**
+     * @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
+     */
+    private $dispatcher;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {

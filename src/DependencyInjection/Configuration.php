@@ -22,8 +22,9 @@ class Configuration implements ConfigurationInterface
 
     /**
      * If the kernel is running in debug mode.
+     * @var bool
      */
-    private bool $debug;
+    private $debug;
 
     public function __construct(bool $debug)
     {

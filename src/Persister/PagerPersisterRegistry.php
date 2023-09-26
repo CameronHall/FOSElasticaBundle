@@ -15,7 +15,10 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 
 final class PagerPersisterRegistry
 {
-    private ServiceLocator $persisters;
+    /**
+     * @var \Symfony\Component\DependencyInjection\ServiceLocator
+     */
+    private $persisters;
 
     public function __construct(ServiceLocator $persisters)
     {

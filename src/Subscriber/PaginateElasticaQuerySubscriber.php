@@ -20,7 +20,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class PaginateElasticaQuerySubscriber implements EventSubscriberInterface
 {
-    private RequestStack $requestStack;
+    /**
+     * @var \Symfony\Component\HttpFoundation\RequestStack
+     */
+    private $requestStack;
 
     public function __construct(RequestStack $requestStack)
     {

@@ -26,7 +26,10 @@ use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-
+use Symfony\Component\EventDispatcher\EventDispatcherInterface as LegacyEventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 /**
  * @internal
  */
@@ -41,7 +44,18 @@ class InPlacePagerPersisterTest extends TestCase
 
     public function testCouldBeConstructedWithPersisterRegistryAndDispatcherAsArguments()
     {
-        new InPlacePagerPersister($this->createPersisterRegistryMock(), new EventDispatcher());
+        new InPlacePagerPersister($this->createPersisterRegistryMock(), $this->getEventDispatcher());
+    }
+
+    private function getEventDispatcher()
+    {
+        $eventDispatcher = new EventDispatcher();
+        if (Kernel::VERSION_ID < 40300) {
+            if (class_exists('\Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy')) {
+                return LegacyEventDispatcherProxy::decorate($eventDispatcher);
+            }
+        }
+        return $eventDispatcher;
     }
 
     public function testShouldDispatchPrePersistEventWithExpectedArguments()

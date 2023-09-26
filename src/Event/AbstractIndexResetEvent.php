@@ -3,7 +3,7 @@
 /*
  * This file is part of the FOSElasticaBundle package.
  *
- * (c) FriendsOfSymfony <https://friendsofsymfony.github.com/>
+ * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,38 +11,142 @@
 
 namespace FOS\ElasticaBundle\Event;
 
-/**
- * Index ResetEvent.
- *
- * @author Oleg Andreyev <oleg.andreyev@intexsys.lv>
- */
-abstract class AbstractIndexResetEvent extends AbstractIndexEvent
-{
+use Symfony\Component\EventDispatcher\Event as LegacyEvent;
+use Symfony\Contracts\EventDispatcher\Event;
+
+if (!class_exists(Event::class)) {
     /**
-     * @var bool
+     * Symfony 3.4
      */
-    protected $force;
 
     /**
-     * @var bool
+     * Index ResetEvent.
+     *
+     * @author Oleg Andreyev <oleg.andreyev@intexsys.lv>
      */
-    private $populating;
-
-    public function __construct(string $index, bool $populating, bool $force)
+    class AbstractIndexResetEvent extends AbstractIndexEvent
     {
-        parent::__construct($index);
+        /**
+         * @LegacyEvent("FOS\ElasticaBundle\Event\IndexResetEvent")
+         */
+        const PRE_INDEX_RESET = 'elastica.index.pre_reset';
+        /**
+         * @LegacyEvent("FOS\ElasticaBundle\Event\IndexResetEvent")
+         */
+        const POST_INDEX_RESET = 'elastica.index.post_reset';
+        /**
+         * @var bool
+         */
+        private $force;
+        /**
+         * @var bool
+         */
+        private $populating;
 
-        $this->force = $force;
-        $this->populating = $populating;
+        /**
+         * @param string $index
+         * @param bool   $populating
+         * @param bool   $force
+         */
+        public function __construct($index, $populating, $force)
+        {
+            parent::__construct($index);
+
+            $this->force = $force;
+            $this->populating = $populating;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isForce()
+        {
+            return $this->force;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isPopulating()
+        {
+            return $this->populating;
+        }
+
+        /**
+         * @param bool $force
+         */
+        public function setForce(bool $force)
+        {
+            $this->force = $force;
+        }
     }
+} else {
+    /**
+     * Symfony >= 4.3
+     */
 
-    public function isForce(): bool
+    /**
+     * Index ResetEvent.
+     *
+     * @author Oleg Andreyev <oleg.andreyev@intexsys.lv>
+     */
+    class AbstractIndexResetEvent extends AbstractIndexEvent
     {
-        return $this->force;
-    }
+        /**
+         * @Event("FOS\ElasticaBundle\Event\IndexResetEvent")
+         */
+        const PRE_INDEX_RESET = 'elastica.index.pre_reset';
 
-    public function isPopulating(): bool
-    {
-        return $this->populating;
+        /**
+         * @Event("FOS\ElasticaBundle\Event\IndexResetEvent")
+         */
+        const POST_INDEX_RESET = 'elastica.index.post_reset';
+
+        /**
+         * @var bool
+         */
+        private $force;
+
+        /**
+         * @var bool
+         */
+        private $populating;
+
+        /**
+         * @param string $index
+         * @param bool   $populating
+         * @param bool   $force
+         */
+        public function __construct($index, $populating, $force)
+        {
+            parent::__construct($index);
+
+            $this->force = $force;
+            $this->populating = $populating;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isForce()
+        {
+            return $this->force;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isPopulating()
+        {
+            return $this->populating;
+        }
+
+        /**
+         * @param bool $force
+         */
+        public function setForce(bool $force)
+        {
+            $this->force = $force;
+        }
     }
 }

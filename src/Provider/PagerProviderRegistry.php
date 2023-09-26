@@ -18,7 +18,10 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
  */
 class PagerProviderRegistry
 {
-    private ServiceLocator $providers;
+    /**
+     * @var \Symfony\Component\DependencyInjection\ServiceLocator
+     */
+    private $providers;
 
     public function __construct(ServiceLocator $providers)
     {

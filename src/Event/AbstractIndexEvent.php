@@ -13,7 +13,7 @@ namespace FOS\ElasticaBundle\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
-abstract class AbstractIndexEvent extends Event
+abstract class AbstractIndexEvent extends AbstractEvent
 {
     /**
      * @var string

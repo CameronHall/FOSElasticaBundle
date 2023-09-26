@@ -15,10 +15,4 @@ use Elastica\Document;
 
 final class PreTransformEvent extends AbstractTransformEvent
 {
-    public function setDocument(Document $document): self
-    {
-        $this->document = $document;
-
-        return $this;
-    }
 }

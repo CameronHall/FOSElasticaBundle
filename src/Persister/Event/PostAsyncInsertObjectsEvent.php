@@ -11,6 +11,7 @@
 
 namespace FOS\ElasticaBundle\Persister\Event;
 
+use FOS\ElasticaBundle\Event\AbstractEvent;
 use FOS\ElasticaBundle\Persister\ObjectPersisterInterface;
 use FOS\ElasticaBundle\Provider\PagerInterface;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -20,7 +21,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * @deprecated since 6.3 will be removed in 7.0
  */
-final class PostAsyncInsertObjectsEvent extends Event implements PersistEvent
+final class PostAsyncInsertObjectsEvent extends AbstractEvent implements PersistEvent
 {
     /**
      * @var PagerInterface

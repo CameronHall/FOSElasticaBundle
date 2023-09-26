@@ -24,12 +24,18 @@ use Psr\Log\LoggerInterface;
  */
 class ElasticaLogger extends AbstractLogger
 {
-    protected ?LoggerInterface $logger;
+    /**
+     * @var \Psr\Log\LoggerInterface|null
+     */
+    protected $logger;
     /**
      * @var list<array<string, mixed>>
      */
-    protected array $queries = [];
-    protected bool $debug;
+    protected $queries = [];
+    /**
+     * @var bool
+     */
+    protected $debug;
 
     public function __construct(?LoggerInterface $logger = null, bool $debug = false)
     {

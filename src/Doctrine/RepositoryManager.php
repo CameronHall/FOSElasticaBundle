@@ -24,10 +24,22 @@ use FOS\ElasticaBundle\Repository;
  */
 class RepositoryManager implements RepositoryManagerInterface
 {
-    protected array $entities = [];
-    protected array $repositories = [];
-    protected ManagerRegistry $managerRegistry;
-    private RepositoryManagerInterface $repositoryManager;
+    /**
+     * @var mixed[]
+     */
+    protected $entities = [];
+    /**
+     * @var mixed[]
+     */
+    protected $repositories = [];
+    /**
+     * @var \Doctrine\Persistence\ManagerRegistry
+     */
+    protected $managerRegistry;
+    /**
+     * @var \FOS\ElasticaBundle\Manager\RepositoryManagerInterface
+     */
+    private $repositoryManager;
 
     public function __construct(ManagerRegistry $managerRegistry, RepositoryManagerInterface $repositoryManager)
     {

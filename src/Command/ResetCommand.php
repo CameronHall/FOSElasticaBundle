@@ -23,8 +23,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ResetCommand extends Command
 {
-    private IndexManager $indexManager;
-    private Resetter $resetter;
+    /**
+     * @var \FOS\ElasticaBundle\Index\IndexManager
+     */
+    private $indexManager;
+    /**
+     * @var \FOS\ElasticaBundle\Index\Resetter
+     */
+    private $resetter;
 
     public function __construct(
         IndexManager $indexManager,

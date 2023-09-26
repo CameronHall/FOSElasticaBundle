@@ -25,8 +25,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class DeleteCommand extends Command
 {
-    private Client $client;
-    private IndexManager $indexManager;
+    /**
+     * @var \FOS\ElasticaBundle\Elastica\Client
+     */
+    private $client;
+    /**
+     * @var \FOS\ElasticaBundle\Index\IndexManager
+     */
+    private $indexManager;
 
     public function __construct(
         Client $client,

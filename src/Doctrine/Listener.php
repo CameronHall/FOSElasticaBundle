@@ -27,34 +27,43 @@ class Listener
 {
     /**
      * Objects scheduled for insertion.
+     * @var mixed[]
      */
-    public array $scheduledForInsertion = [];
+    public $scheduledForInsertion = [];
 
     /**
      * Objects scheduled to be updated or removed.
+     * @var mixed[]
      */
-    public array $scheduledForUpdate = [];
+    public $scheduledForUpdate = [];
 
     /**
      * IDs of objects scheduled for removal.
+     * @var mixed[]
      */
-    public array $scheduledForDeletion = [];
+    public $scheduledForDeletion = [];
     /**
      * Object persister.
+     * @var \FOS\ElasticaBundle\Persister\ObjectPersisterInterface
      */
-    protected ObjectPersisterInterface $objectPersister;
+    protected $objectPersister;
 
     /**
      * PropertyAccessor instance.
+     * @var \Symfony\Component\PropertyAccess\PropertyAccessorInterface
      */
-    protected PropertyAccessorInterface $propertyAccessor;
+    protected $propertyAccessor;
 
     /**
      * Configuration for the listener.
+     * @var mixed[]
      */
-    private array $config;
+    private $config;
 
-    private IndexableInterface $indexable;
+    /**
+     * @var \FOS\ElasticaBundle\Provider\IndexableInterface
+     */
+    private $indexable;
 
     public function __construct(
         ObjectPersisterInterface $objectPersister,
