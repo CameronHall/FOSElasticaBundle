@@ -538,23 +538,6 @@ class ModelToElasticaAutoTransformerTest extends TestCase
     }
 
     /**
-     * @requires PHP >= 8.1
-     */
-    public function testBackedEnumIsCastedToItsValue(): void
-    {
-        $object = new \stdClass();
-        $object->id = 123;
-        $object->int = $intEnum = FieldEnumInt::FOO;
-        $object->string = $stringEnum = FieldEnumString::FOO;
-
-        $transformer = $this->getTransformer();
-        $document = $transformer->transform($object, ['int' => 'int', 'string' => 'string']);
-
-        $this->assertSame($intEnum->value, $document->get('int'));
-        $this->assertSame($stringEnum->value, $document->get('string'));
-    }
-
-    /**
      * @param EventDispatcherInterface|null $dispatcher
      *
      * @return ModelToElasticaAutoTransformer

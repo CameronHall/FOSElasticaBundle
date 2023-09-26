@@ -30,11 +30,11 @@
     ],
     "homepage": "https://github.com/FriendsOfSymfony/FOSElasticaBundle",
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": ">=7.2",
         "pagerfanta/pagerfanta": "^2.4 || ^3.0 || ^4.0",
         "psr/log": "^1.0 || ^2.0 || ^3.0",
         "ruflin/elastica": "^7.1",
-        "symfony/console": "^3.4 || ^4.4 || ^5.4 || ^6.2",
+        "symfony/console": "^3.4 || ^4.4 || ^5.4",
         "symfony/dependency-injection": "^3.4 || ^4.4 || ^5.4 || ^6.2",
         "symfony/framework-bundle": "^3.4 || ^4.4 || ^5.4 || ^6.2",
         "symfony/property-access": "^3.4 || ^4.4 || ^5.4 || ^6.2"
@@ -55,12 +55,13 @@
         "phpstan/phpstan-phpunit": "^1.1",
         "phpstan/phpstan-symfony": "^1.2",
         "phpunit/phpunit": "^9.5",
-        "symfony/expression-language": "^3.4 || ^4.4 || ^5.4 || ^6.2",
-        "symfony/messenger": "^3.4 || ^4.4 || ^5.4 || ^6.2",
-        "symfony/serializer": "^3.4 || ^4.4 || ^5.4 || ^6.2",
-        "symfony/twig-bundle": "^3.4 || ^4.4 || ^5.4 || ^6.2",
-        "symfony/web-profiler-bundle": "^3.4 || ^4.4 || ^5.4 || ^6.2",
-        "symfony/yaml": "^3.4 || ^4.4 || ^5.4 || ^6.2"
+        "symfony/expression-language": "^3.4 || ^4.4 || ^5.4",
+        "symfony/messenger": "^3.4 || ^4.4 || ^5.4",
+        "symfony/serializer": "^3.4 || ^4.4 || ^5.4",
+        "symfony/twig-bundle": "^3.4 || ^4.4 || ^5.4",
+        "symfony/web-profiler-bundle": "^3.4 || ^4.4 || ^5.4",
+        "symfony/yaml": "^3.4 || ^4.4 || ^5.4",
+        "rector/rector": "^0.18.4"
     },
     "suggest": {
         "enqueue/elastica-bundle": "For populating Elasticsearch indexes asynchronously and using significanly less resources. Uses Enqueue.",
